@@ -1,4 +1,4 @@
-package com.projectideamanager.demo.models.projectidea
+package com.projectideamanager.demo.model.projectidea
 
 import org.springframework.data.annotation.Id
 
