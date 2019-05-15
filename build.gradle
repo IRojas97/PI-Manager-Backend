@@ -35,3 +35,6 @@ sourceSets {
         }
     }
 }
+
+task stage(dependsOn: ['build', 'clean'])
+build.mustRunAfter clean

@@ -3,10 +3,11 @@ package com.projectideamanager.demo.service;
 import com.projectideamanager.demo.model.projectidea.ProjectIdeaMongo;
 import com.projectideamanager.demo.model.projectidea.ProjectIdeaMongoRepository;
 import com.projectideamanager.demo.model.projectidea.ProjectIdeaPost;
-import java.util.List;
-import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProjectIdeaService {
