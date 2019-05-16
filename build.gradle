@@ -15,6 +15,10 @@ repositories {
     mavenCentral()
 }
 
+configurations {
+    dev
+}
+
 dependencies {
     // Spring Boot
     implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -23,6 +27,9 @@ dependencies {
 
     // Groovy
     implementation 'org.codehaus.groovy:groovy-all:2.4.5'
+
+    // Development
+    dev("org.springframework.boot:spring-boot-devtools")
 }
 
 sourceSets {
@@ -34,6 +41,12 @@ sourceSets {
             srcDirs = [ 'src/main/groovy', 'src/main/java' ]
         }
     }
+}
+
+
+bootRun {
+    // Use Spring Boot DevTool only when we run Gradle bootRun task
+    classpath = sourceSets.main.runtimeClasspath + configurations.dev
 }
 
 task stage(dependsOn: ['build', 'clean'])
