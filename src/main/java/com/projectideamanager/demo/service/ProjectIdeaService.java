@@ -3,13 +3,18 @@ package com.projectideamanager.demo.service;
 import com.projectideamanager.demo.model.projectidea.ProjectIdeaMongo;
 import com.projectideamanager.demo.model.projectidea.ProjectIdeaMongoRepository;
 import com.projectideamanager.demo.model.projectidea.ProjectIdeaPost;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
+
 @Service
+@Validated
 public class ProjectIdeaService {
   @Autowired
   ProjectIdeaMongoRepository projectIdeaMongoRepository;
@@ -39,6 +44,9 @@ public class ProjectIdeaService {
     projectIdeaMongo.setCreatedDate(projectIdeaPost.getCreatedDate());
     projectIdeaMongo.setDescription(projectIdeaPost.getDescription());
     projectIdeaMongo.setName(projectIdeaPost.getName());
+    projectIdeaMongo.setSolutionList(projectIdeaPost.getSolutionList());
+    projectIdeaMongo.setDifficulty(projectIdeaPost.getDifficulty());
+    projectIdeaMongo.setEditedDate(projectIdeaMongo.getEditedDate());
 
     return  projectIdeaMongo;
   }

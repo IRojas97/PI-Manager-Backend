@@ -1,27 +1,28 @@
-package com.projectideamanager.demo.model.projectidea
+package com.projectideamanager.demo.model.solution
 
-import com.projectideamanager.demo.model.interfaces.Difficulty
 import org.springframework.data.annotation.Id
 
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotNull
 
-class ProjectIdeaMongo {
+class SolutionMongo {
     @Id
     @NotBlank
     String id
     @NotBlank
-    String name
-    @NotBlank
     String author
     @NotBlank
-    String description
+    String text
     @NotNull
     Date createdDate
     @NotNull
     Date editedDate
     @NotNull
-    Difficulty difficulty
+    Boolean accepted
     @NotNull
-    List<String> solutionList
+    List<String> comments
+    @NotNull
+    URL repository
+    @NotBlank
+    String parentId
 }

@@ -1,27 +1,24 @@
-package com.projectideamanager.demo.model.projectidea
+package com.projectideamanager.demo.model.comment
 
-import com.projectideamanager.demo.model.interfaces.Difficulty
 import org.springframework.data.annotation.Id
 
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotNull
 
-class ProjectIdeaMongo {
+class CommentMongo {
     @Id
     @NotBlank
     String id
     @NotBlank
-    String name
-    @NotBlank
     String author
     @NotBlank
-    String description
+    String text
     @NotNull
     Date createdDate
     @NotNull
     Date editedDate
     @NotNull
-    Difficulty difficulty
-    @NotNull
-    List<String> solutionList
+    List<String> replies
+    @NotBlank
+    String parentId
 }

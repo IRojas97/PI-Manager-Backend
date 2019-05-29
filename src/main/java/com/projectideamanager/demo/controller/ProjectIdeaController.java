@@ -3,16 +3,20 @@ package com.projectideamanager.demo.controller;
 import com.projectideamanager.demo.model.projectidea.ProjectIdeaMongo;
 import com.projectideamanager.demo.model.projectidea.ProjectIdeaPost;
 import com.projectideamanager.demo.service.ProjectIdeaService;
+
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.constraints.NotBlank;
-
 @RestController
+@Validated
 @CrossOrigin(origins = "https://localhost:4200")
-@RequestMapping("api/v1/projectIdeas/")
+@RequestMapping("api/v1/projectIdeas")
 public class ProjectIdeaController {
 
   ProjectIdeaService projectIdeaService;
@@ -39,7 +43,7 @@ public class ProjectIdeaController {
   }
 
   @PostMapping
-  public ResponseEntity postProjectIdea(@RequestBody ProjectIdeaPost projectIdeaPost) {
+  public ResponseEntity postProjectIdea(@Valid @RequestBody ProjectIdeaPost projectIdeaPost) {
     ProjectIdeaMongo projectIdeaMongo = projectIdeaService.mapPostToMongo(projectIdeaPost);
     projectIdeaService.saveProjectIdea(projectIdeaMongo);
 
@@ -48,7 +52,7 @@ public class ProjectIdeaController {
 
   @PutMapping(path = "{projectIdeaId}")
   public ResponseEntity putProjectIdea(@PathVariable @NotBlank String projectIdeaId,
-                                       @RequestBody ProjectIdeaPost projectIdeaPost) {
+                                       @Valid @RequestBody ProjectIdeaPost projectIdeaPost) {
     if (projectIdeaService.getById(projectIdeaId) == null) {
       return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
@@ -61,7 +65,7 @@ public class ProjectIdeaController {
   }
 
   @DeleteMapping(path = "{projectIdeaId}")
-  public ResponseEntity deleteProjectIdea(@PathVariable String projectIdeaId) {
+  public ResponseEntity deleteProjectIdea(@PathVariable @NotBlank String projectIdeaId) {
     if (projectIdeaService.getById(projectIdeaId) == null) {
       return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
