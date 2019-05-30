@@ -1,8 +1,10 @@
 package com.projectideamanager.demo.service;
 
 import com.mongodb.MongoClientException;
+import com.projectideamanager.demo.model.comment.CommentComplete;
 import com.projectideamanager.demo.model.projectidea.ProjectIdeaMongo;
 import com.projectideamanager.demo.model.projectidea.ProjectIdeaMongoRepository;
+import com.projectideamanager.demo.model.solution.SolutionComplete;
 import com.projectideamanager.demo.model.solution.SolutionMongo;
 import com.projectideamanager.demo.model.solution.SolutionMongoRepository;
 import com.projectideamanager.demo.model.solution.SolutionPost;
@@ -19,6 +21,8 @@ public class SolutionService {
   SolutionMongoRepository solutionMongoRepository;
   @Autowired
   ProjectIdeaMongoRepository projectIdeaMongoRepository;
+  @Autowired
+  CommentService commentService;
 
   public List<SolutionMongo> getByParentId(String parentId) {
     return solutionMongoRepository.findByParentId(parentId);
@@ -47,6 +51,19 @@ public class SolutionService {
     return solutionMongo.orElse(null);
   }
 
+  public SolutionComplete getCompleteById(String id) {
+    SolutionComplete solutionComplete;
+    SolutionMongo solutionMongo = this.getById(id);
+
+    if (solutionMongo == null) {
+      throw new MongoClientException("Could not find solution by ID: " + id);
+    }
+
+    solutionComplete = mapMongoToComplete(solutionMongo);
+
+    return solutionComplete;
+  }
+
   public SolutionMongo mapPostToMongo(SolutionPost solutionPost) {
     SolutionMongo solutionMongo = new SolutionMongo();
 
@@ -60,5 +77,28 @@ public class SolutionService {
     solutionMongo.setParentId((solutionPost.getParentId()));
 
     return solutionMongo;
+  }
+
+  public SolutionComplete mapMongoToComplete(SolutionMongo solutionMongo) {
+    SolutionComplete solutionComplete = new SolutionComplete();
+    List<String> commentList = solutionMongo.getComments();
+    List<CommentComplete> commentCompleteList = new ArrayList<>();
+
+    solutionComplete.setId(solutionMongo.getId());
+    solutionComplete.setAuthor(solutionMongo.getAuthor());
+    solutionComplete.setText(solutionMongo.getText());
+    solutionComplete.setCreatedDate(solutionMongo.getCreatedDate());
+    solutionComplete.setEditedDate(solutionMongo.getEditedDate());
+    solutionComplete.setAccepted(solutionMongo.getAccepted());
+    solutionComplete.setRepository(solutionMongo.getRepository());
+    solutionComplete.setParentId((solutionMongo.getParentId()));
+
+    if (!solutionMongo.getComments().isEmpty()) {
+      commentList.parallelStream().forEach(comment ->
+              commentCompleteList.add(commentService.getCompleteById(comment)));
+    }
+    solutionComplete.setComments(commentCompleteList);
+
+    return solutionComplete;
   }
 }

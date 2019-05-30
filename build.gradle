@@ -27,6 +27,9 @@ dependencies {
 
     // Groovy
     implementation 'org.codehaus.groovy:groovy-all:2.5.7'
+    
+    // Guava
+    compile group: 'com.google.guava', name: 'guava', version: '23.5-jre'
 
     // Development
     dev("org.springframework.boot:spring-boot-devtools")

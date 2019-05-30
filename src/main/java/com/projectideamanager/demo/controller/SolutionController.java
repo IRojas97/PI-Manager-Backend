@@ -25,7 +25,7 @@ public class SolutionController {
     this.solutionService = solutionService;
   }
 
-  @GetMapping(path = "{solutionId}")
+  @GetMapping(path = "/{solutionId}")
   public ResponseEntity getWithId(@PathVariable @NotBlank String solutionId) {
     SolutionMongo solutionMongo = solutionService.getById(solutionId);
 

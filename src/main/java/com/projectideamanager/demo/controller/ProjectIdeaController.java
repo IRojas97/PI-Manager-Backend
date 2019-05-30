@@ -1,5 +1,6 @@
 package com.projectideamanager.demo.controller;
 
+import com.projectideamanager.demo.model.projectidea.ProjectIdeaComplete;
 import com.projectideamanager.demo.model.projectidea.ProjectIdeaMongo;
 import com.projectideamanager.demo.model.projectidea.ProjectIdeaPost;
 import com.projectideamanager.demo.service.ProjectIdeaService;
@@ -31,7 +32,7 @@ public class ProjectIdeaController {
     return new ResponseEntity<>(projectIdeaService.getAll(), HttpStatus.OK);
   }
 
-  @GetMapping(path = "{projectIdeaId}")
+  @GetMapping(path = "/{projectIdeaId}")
   public ResponseEntity getWithId(@PathVariable @NotBlank String projectIdeaId) {
     ProjectIdeaMongo projectIdeaMongo = projectIdeaService.getById(projectIdeaId);
 
@@ -42,6 +43,17 @@ public class ProjectIdeaController {
     return new ResponseEntity<>(projectIdeaMongo, HttpStatus.OK);
   }
 
+  @GetMapping(path = "/{projectIdeaId}/complete")
+  public ResponseEntity getCompleteWithId(@PathVariable @NotBlank String projectIdeaId) {
+    ProjectIdeaComplete projectIdeaComplete = projectIdeaService.getCompleteById(projectIdeaId);
+
+    if (projectIdeaComplete == null) {
+      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+    return new ResponseEntity<>(projectIdeaComplete, HttpStatus.OK);
+  }
+
   @PostMapping
   public ResponseEntity postProjectIdea(@Valid @RequestBody ProjectIdeaPost projectIdeaPost) {
     ProjectIdeaMongo projectIdeaMongo = projectIdeaService.mapPostToMongo(projectIdeaPost);
@@ -50,7 +62,7 @@ public class ProjectIdeaController {
     return new ResponseEntity<>(projectIdeaMongo, HttpStatus.OK);
   }
 
-  @PutMapping(path = "{projectIdeaId}")
+  @PutMapping(path = "/{projectIdeaId}")
   public ResponseEntity putProjectIdea(@PathVariable @NotBlank String projectIdeaId,
                                        @Valid @RequestBody ProjectIdeaPost projectIdeaPost) {
     if (projectIdeaService.getById(projectIdeaId) == null) {
@@ -64,7 +76,7 @@ public class ProjectIdeaController {
     return new ResponseEntity<>(projectIdeaMongo, HttpStatus.OK);
   }
 
-  @DeleteMapping(path = "{projectIdeaId}")
+  @DeleteMapping(path = "/{projectIdeaId}")
   public ResponseEntity deleteProjectIdea(@PathVariable @NotBlank String projectIdeaId) {
     if (projectIdeaService.getById(projectIdeaId) == null) {
       return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
