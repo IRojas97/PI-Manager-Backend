@@ -8,8 +8,12 @@ plugins {
 
 apply plugin: 'io.spring.dependency-management'
 
-group = 'com.projectideamanager'
-sourceCompatibility = '1.8'
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+bootJar {
+    baseName = 'pi-manager-backend'
+}
 
 repositories {
     mavenCentral()
@@ -54,3 +58,11 @@ bootRun {
 
 task stage(dependsOn: ['build', 'clean'])
 build.mustRunAfter clean
+
+task exportMongo(type:Exec) {
+    commandLine './mongo/export.sh'
+}
+
+task importMongo(type:Exec) {
+    commandLine './mongo/import.sh'
+}

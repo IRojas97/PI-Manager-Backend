@@ -25,7 +25,7 @@ public class CommentController {
     this.commentService = commentService;
   }
 
-  @GetMapping(path = "{commentId}")
+  @GetMapping(path = "/{commentId}")
   public ResponseEntity getWithId(@PathVariable @NotBlank String commentId) {
     CommentMongo commentMongo = commentService.getById(commentId);
 
@@ -44,7 +44,7 @@ public class CommentController {
     return new ResponseEntity<>(commentMongo, HttpStatus.OK);
   }
 
-  @PostMapping(path = "reply")
+  @PostMapping(path = "/reply")
   public ResponseEntity postReply(@Valid @RequestBody CommentPost commentPost) {
     CommentMongo commentMongo = commentService.mapPostToMongo(commentPost);
     commentService.saveReply(commentMongo);

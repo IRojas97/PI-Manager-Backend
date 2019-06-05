@@ -99,6 +99,7 @@ public class CommentService {
   private CommentComplete mapMongoToComplete(CommentMongo commentMongo) {
     CommentComplete commentComplete = new CommentComplete();
 
+    commentComplete.setId(commentMongo.getId());
     commentComplete.setAuthor(commentMongo.getAuthor());
     commentComplete.setText(commentMongo.getText());
     commentComplete.setCreatedDate(commentMongo.getCreatedDate());

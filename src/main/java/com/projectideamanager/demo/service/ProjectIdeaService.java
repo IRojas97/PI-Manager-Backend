@@ -1,6 +1,7 @@
 package com.projectideamanager.demo.service;
 
 import com.mongodb.MongoClientException;
+import com.projectideamanager.demo.model.interfaces.Difficulty;
 import com.projectideamanager.demo.model.projectidea.ProjectIdeaComplete;
 import com.projectideamanager.demo.model.projectidea.ProjectIdeaMongo;
 import com.projectideamanager.demo.model.projectidea.ProjectIdeaMongoRepository;
@@ -90,5 +91,20 @@ public class ProjectIdeaService {
     projectIdeaComplete.setSolutionList(solutionCompleteList);
 
     return projectIdeaComplete;
+  }
+
+  public void remap() {
+    List<ProjectIdeaMongo> projectIdeaMongoList = getAll();
+
+    projectIdeaMongoList.parallelStream().forEach(project -> {
+      if(project.getDifficulty() == null) {
+        project.setDifficulty(Difficulty.EASY);
+      }
+      if (project.getEditedDate() == null) {
+        project.setEditedDate(project.getCreatedDate());
+      }
+    });
+
+    projectIdeaMongoRepository.saveAll(projectIdeaMongoList);
   }
 }
