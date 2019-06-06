@@ -2,6 +2,8 @@ package com.projectideamanager.demo.controller;
 
 import com.projectideamanager.demo.model.comment.CommentMongo;
 import com.projectideamanager.demo.model.comment.CommentPost;
+import com.projectideamanager.demo.model.solution.SolutionMongo;
+import com.projectideamanager.demo.model.solution.SolutionPost;
 import com.projectideamanager.demo.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -48,6 +50,20 @@ public class CommentController {
   public ResponseEntity postReply(@Valid @RequestBody CommentPost commentPost) {
     CommentMongo commentMongo = commentService.mapPostToMongo(commentPost);
     commentService.saveReply(commentMongo);
+
+    return new ResponseEntity<>(commentMongo, HttpStatus.OK);
+  }
+
+  @PutMapping(path = "/{commentId}")
+  public ResponseEntity putComment(@PathVariable @NotBlank String commentId,
+                                    @Valid @RequestBody CommentPost commentPost) {
+    if (commentService.getById(commentId) == null) {
+      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+    CommentMongo commentMongo = commentService.mapPostToMongo(commentPost);
+    commentMongo.setId(commentId);
+    commentService.saveComment(commentMongo);
 
     return new ResponseEntity<>(commentMongo, HttpStatus.OK);
   }

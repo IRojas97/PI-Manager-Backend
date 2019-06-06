@@ -124,4 +124,14 @@ public class CommentService {
 
     return commentCompleteList;
   }
+
+    public void deleteByIds(List<String> commentList) {
+      if (commentList.isEmpty()) {
+        return;
+      }
+
+      Iterable<CommentMongo> commentMongos = commentMongoRepository.findAllById(commentList);
+      commentMongos.forEach( comment -> this.deleteByIds(comment.getReplies()));
+      commentMongoRepository.deleteAll(commentMongos);
+    }
 }

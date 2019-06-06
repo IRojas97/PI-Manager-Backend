@@ -43,4 +43,18 @@ public class SolutionController {
 
     return new ResponseEntity<>(solutionMongo, HttpStatus.OK);
   }
+
+  @PutMapping(path = "/{solutionId}")
+  public ResponseEntity putSolution(@PathVariable @NotBlank String solutionId,
+                                       @Valid @RequestBody SolutionPost solutionPost) {
+    if (solutionService.getById(solutionId) == null) {
+      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+    SolutionMongo solutionMongo = solutionService.mapPostToMongo(solutionPost);
+    solutionMongo.setId(solutionId);
+    solutionService.saveSolution(solutionMongo);
+
+    return new ResponseEntity<>(solutionMongo, HttpStatus.OK);
+  }
 }

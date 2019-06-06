@@ -101,4 +101,14 @@ public class SolutionService {
 
     return solutionComplete;
   }
+
+    public void deleteByIds(List<String> solutionList) {
+      if(solutionList.isEmpty()) {
+        return;
+      }
+
+      Iterable<SolutionMongo> solutionMongos = solutionMongoRepository.findAllById(solutionList);
+      solutionMongos.forEach( solution -> commentService.deleteByIds(solution.getComments()));
+      solutionMongoRepository.deleteAll(solutionMongos);
+    }
 }

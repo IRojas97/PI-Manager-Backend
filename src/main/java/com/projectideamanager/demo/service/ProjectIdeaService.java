@@ -53,6 +53,13 @@ public class ProjectIdeaService {
   }
 
   public void deleteById(String id) {
+    ProjectIdeaMongo projectIdeaMongo = getById(id);
+
+    if (projectIdeaMongo == null) {
+      throw new MongoClientException("Could not find project by ID: " + id);
+    }
+
+    solutionService.deleteByIds(projectIdeaMongo.getSolutionList());
     projectIdeaMongoRepository.deleteById(id);
   }
 
